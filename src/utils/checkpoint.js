@@ -25,6 +25,10 @@ export function getCheckpoint() {
  */
 export function updateCheckpoint(fileName) {
   try {
+    // Ensure the directory exists
+    const dir = path.dirname(CHECKPOINT_FILE);
+    fs.mkdirSync(dir, { recursive: true });
+
     fs.writeFileSync(
       CHECKPOINT_FILE,
       JSON.stringify({ lastFile: fileName }, null, 2)
