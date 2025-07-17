@@ -1,13 +1,12 @@
 // src/ingestion/ingest.js
 import fs from "fs";
 import path from "path";
-import duckdb from "duckdb";
 import { fileURLToPath } from "url";
 
 import { getCheckpoint, updateCheckpoint } from "../utils/checkpoint.js";
 import { logInfo, logSuccess, logError } from "../utils/logger.js";
 
-const db = new duckdb.Database(":memory:");
+import { runQuery } from "../utils/db.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default async function ingestParquetFiles() {
@@ -66,13 +65,4 @@ export default async function ingestParquetFiles() {
   logInfo(
     `📊 Ingestion Summary → Files: ${filesRead}, Processed: ${recordsProcessed}, Failed: ${recordsFailed}`
   );
-}
-
-function runQuery(query) {
-  return new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
 }

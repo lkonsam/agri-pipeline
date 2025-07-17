@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 
-const CHECKPOINT_FILE = "./checkpoint.json";
+const CHECKPOINT_FILE = "./data/checkpoint/checkpoint.json";
 
 /**
  * Gets the name of the last processed file from checkpoint.
@@ -29,6 +29,7 @@ export function updateCheckpoint(fileName) {
       CHECKPOINT_FILE,
       JSON.stringify({ lastFile: fileName }, null, 2)
     );
+    console.log(`✅ Checkpoint updated: ${fileName}`);
   } catch (err) {
     console.error("⚠️ Failed to update checkpoint:", err.message);
   }

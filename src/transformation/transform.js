@@ -10,9 +10,9 @@ import enrichWithAverages from "./enrichWithAverages.js";
 import flagAnomalies from "./flagAnomalies.js";
 import normalizeValues from "./normalizeValues.js";
 
-export default async function runTransformOnParquet() {
-  const db = new duckdb.Database(":memory:");
+import { runQuery } from "../utils/db.js";
 
+export default async function runTransformOnParquet() {
   const rawDir = path.resolve("data/raw");
   const files = fs.readdirSync(rawDir).filter((f) => f.endsWith(".parquet"));
 
@@ -27,12 +27,7 @@ export default async function runTransformOnParquet() {
 
   const query = `SELECT * FROM parquet_scan('${parquetPath}')`;
 
-  const rawData = await new Promise((resolve, reject) => {
-    db.all(query, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const rawData = await runQuery(query);
 
   logInfo(`Loaded ${rawData.length} records from ${latestFile}`);
 
