@@ -1,25 +1,21 @@
+// src/app.js
 import express from "express";
-import ingestParquetFiles from "./ingestion/ingest.js";
-import runTransformOnParquet from "./transformation/transform.js";
-import runValidationReport from "./validation/validate.js";
-import saveToWarehouse from "./storage/saveToWarehouse.js";
+import config from "../config/config.js";
+import cors from "cors";
 
-import apiRoutes from "./routes/index.js";
+// 🔔 Import cron scheduler
+import "./scheduler/cron.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.port || 3000;
+
+app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("🌱 Agri Data Pipeline is running");
 });
 
-app.use("/api", apiRoutes);
-
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
-  await ingestParquetFiles();
-  await runTransformOnParquet();
-
-  await runValidationReport();
-  await saveToWarehouse();
 });
