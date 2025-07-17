@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { logInfo, logSuccess } from "../utils/logger.js";
 
-import { runQuery } from "../utils/db.js";
+import db from "../utils/db.js";
 
 export default async function runValidationReport() {
   const inputPath = path.resolve("data/processed/final_transformed.json");
@@ -17,7 +17,7 @@ export default async function runValidationReport() {
     CREATE TABLE transformed AS
     SELECT * FROM read_json_auto('${inputPath}');
   `;
-  await runQuery(createQuery);
+  await db.execute(createQuery);
   logInfo("✅ Loaded transformed data into DuckDB");
 
   // Step 2: Generate data quality report
@@ -30,7 +30,7 @@ export default async function runValidationReport() {
     FROM transformed
     GROUP BY reading_type
   `;
-  const qualityResults = await runQuery(qualityQuery);
+  const qualityResults = await db.execute(qualityQuery);
 
   const qualityHeader =
     "reading_type,total_records,percent_missing,percent_anomalous\n";
@@ -79,7 +79,7 @@ export default async function runValidationReport() {
 
 
   `;
-  const gapResults = await runQuery(gapQuery);
+  const gapResults = await db.execute(gapQuery);
 
   const gapHeader =
     "sensor_id,expected_hours,actual_hours,missing_hours,percent_missing\n";

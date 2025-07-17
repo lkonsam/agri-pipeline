@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import { getCheckpoint, updateCheckpoint } from "../utils/checkpoint.js";
 import { logInfo, logSuccess, logError } from "../utils/logger.js";
 
-import { runQuery } from "../utils/db.js";
+import db from "../utils/db.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default async function ingestParquetFiles() {
@@ -44,8 +44,8 @@ export default async function ingestParquetFiles() {
           OR battery_level IS NULL
       `;
 
-      const total = await runQuery(totalQuery);
-      const invalid = await runQuery(invalidQuery);
+      const total = await db.execute(totalQuery);
+      const invalid = await db.execute(invalidQuery);
 
       recordsProcessed += Number(total[0].total);
       recordsFailed += Number(invalid[0].invalid_count);

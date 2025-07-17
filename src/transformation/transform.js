@@ -10,7 +10,7 @@ import enrichWithAverages from "./enrichWithAverages.js";
 import flagAnomalies from "./flagAnomalies.js";
 import normalizeValues from "./normalizeValues.js";
 
-import { runQuery } from "../utils/db.js";
+import db from "../utils/db.js";
 
 export default async function runTransformOnParquet() {
   const rawDir = path.resolve("data/raw");
@@ -27,7 +27,7 @@ export default async function runTransformOnParquet() {
 
   const query = `SELECT * FROM parquet_scan('${parquetPath}')`;
 
-  const rawData = await runQuery(query);
+  const rawData = await db.execute(query);
 
   logInfo(`Loaded ${rawData.length} records from ${latestFile}`);
 
