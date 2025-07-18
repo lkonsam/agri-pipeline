@@ -78,28 +78,13 @@ docker run -p 3000:3000 agri-pipeline
 ### 🌐 API Usage via Postman
 
 Import the following requests:
-
-#### 1. **GET /summary**
-
-- **URL**: `http://localhost:3000/summary`
-- **Query Params (optional)**:
-
-  - `sensor_id=sensor_1`
-  - `reading_type=temperature`
-  - `from=2023-06-01`
-  - `to=2023-06-30`
-
-#### 2. **GET /health**
-
-- Checks if the server is running.
-
----
+-- postmanCollection.json on the root folder
 
 ### ⏰ Cron-Based Ingestion
 
 - Configured using `node-cron`
 - Adjust schedule in `src/scheduler.js`
-- Default: runs every 5 minutes
+- Default: runs every 5 minutes for production
 
 ---
 
@@ -121,7 +106,7 @@ npm run dev     # Start with nodemon
 ## 🎉 Author
 
 - Created by Konsam Malemngalba Singh
-- Guided by Crio.Do capstone project specification
+- Guided by Crio.Do project specification
 
 ---
 

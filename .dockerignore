@@ -1,5 +1,4 @@
 node_modules
-data/raw/*
 data/processed/*
 data/warehouse/*
 checkpoint.json
