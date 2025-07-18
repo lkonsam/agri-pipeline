@@ -2,7 +2,7 @@ import express from "express";
 import {
   downloadGapReport,
   downloadQualityReport,
-} from "../controllers/reportController.js";
+} from "../../controllers/reportController.js";
 
 const reportRoutes = express.Router();
 

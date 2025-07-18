@@ -1,5 +1,5 @@
 import express from "express";
-import { getSummary } from "../controllers/analyticsController.js";
+import { getSummary } from "../../controllers/analyticsController.js";
 
 const summaryRoutes = express.Router();
 

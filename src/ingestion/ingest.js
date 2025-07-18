@@ -16,7 +16,7 @@ export default async function ingestParquetFiles() {
     .filter((f) => f.endsWith(".parquet"))
     .sort();
 
-  const lastCheckpoint = getCheckpoint();
+  const lastCheckpoint = getCheckpoint("lastIngested");
   let startIndex = lastCheckpoint ? files.indexOf(lastCheckpoint) + 1 : 0;
 
   if (startIndex >= files.length) {
@@ -54,7 +54,7 @@ export default async function ingestParquetFiles() {
       logSuccess(
         `📈 Records processed: ${total[0].total}, Invalid: ${invalid[0].invalid_count}`
       );
-      updateCheckpoint(file);
+      updateCheckpoint("lastIngested", file);
     } catch (err) {
       logError(`❌ Failed to ingest ${file}: ${err.message}`);
       recordsFailed++;

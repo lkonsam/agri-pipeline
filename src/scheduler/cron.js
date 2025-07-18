@@ -5,10 +5,10 @@ import runTransformOnParquet from "../transformation/transform.js";
 import runValidationReport from "../validation/validate.js";
 import { logInfo } from "../utils/logger.js";
 import saveToWarehouse from "../storage/saveToWarehouse.js";
+import config from "../../config/config.js";
 
-// Schedule every 1 hour: You can change to */5 * * * * for every 5 minutes (for testing)
-cron.schedule("*/5 * * * *", async () => {
-  logInfo("🕒 Running scheduled pipeline...");
+async function runPipeline() {
+  logInfo("🧪 Running scheduled pipeline...");
 
   try {
     await ingestParquetFiles();
@@ -17,6 +17,15 @@ cron.schedule("*/5 * * * *", async () => {
     await saveToWarehouse();
     logInfo("✅ Scheduled pipeline complete.");
   } catch (err) {
-    console.error("❌ Scheduled pipeline failed:", err);
+    console.error("❌ Pipeline failed:", err);
   }
-});
+}
+
+if (config.env === "development") {
+  const intervals = ["0", "10", "20", "30", "40", "50"]; // every 10 seconds
+  intervals.forEach((sec) => {
+    cron.schedule(`${sec} * * * * *`, runPipeline);
+  });
+} else {
+  cron.schedule("*/5 * * * *", runPipeline); // every 5 minutes in production
+}

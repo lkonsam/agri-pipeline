@@ -1,5 +1,5 @@
 import express from "express";
-import { getAnomalies } from "../controllers/anomalyController.js";
+import { getAnomalies } from "../../controllers/anomalyController.js";
 
 const anomalyRoutes = express.Router();
 
